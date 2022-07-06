@@ -1,0 +1,15 @@
+
+<p-card class="product" styleClass="p-card-shadow">
+    <div class="product__image">
+        <img [src]="imageSelected" [alt]="product.name" (click)="handleNavigate(product._id)">
+    </div>
+
+    <div class="product__list">
+        <img [src]="product.images.image_1" [alt]="product.name" (mouseenter)="handleHoverImage($event)">
+        <img [src]="product.images.image_2" [alt]="product.name" (mouseenter)="handleHoverImage($event)">
+        <img [src]="product.images.image_3" [alt]="product.name" (mouseenter)="handleHoverImage($event)">
+    </div>
+
+    <p class="product__name" (click)="handleNavigate(product._id)">{{product.name}}</p>
+    <p class="product__price">{{formatPrice(product.price)}}</p>
+</p-card>

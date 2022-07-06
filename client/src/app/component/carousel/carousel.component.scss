@@ -1,0 +1,49 @@
+// <p-carousel styleClass="container mb-5" [value]="products" [numVisible]="1" [numScroll]="1" [circular]="true" >
+//     <ng-template let-product pTemplate="item">
+//         <div class="flex align-items-center justify-content-between column-gap-3 px-3">
+//            <div>
+//                <h5 class="uppercase font-medium text-base text-orange-500 mb-3" [style.letterSpacing]="'2px'">{{product.name}}</h5>
+//                <h2 class="uppercase text-3xl text-800 mb-3" [style.letterSpacing]="'2px'">{{product.title}}</h2>
+//                <p class="uppercase text-xs text-gray-500 font-medium line-height-3">{{product.description}}</p>
+//            </div>
+//            <img [src]="product.image" [alt]="product.name" class="w">
+//         </div>
+//     </ng-template>
+// </p-carousel>
+
+.slider {
+    &__item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0 25px;
+        padding: 0 20px;
+    }
+
+    &__content {
+        display: flex;
+        flex-direction: column;
+        gap: 15px 0;
+        
+        & > * {
+            text-transform: uppercase;
+        }
+
+        h5 {
+            font-weight: 500;
+            color: rgb(252, 118, 69);
+            letter-spacing: 1px;
+        }
+
+        h2 {
+            color: rgb(58, 54, 54);
+            letter-spacing: 1px;
+        }
+
+        p {
+            color: gray;
+            font-size: 12px;
+            line-height: 1.6;
+        }
+    }
+}
