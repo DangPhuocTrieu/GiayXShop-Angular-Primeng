@@ -29,7 +29,27 @@ const productSchema = new mongoose.Schema({
             type: String,
             required: true
         },
-    }
+    },
+    reviews: [
+        {
+            rating: {
+                type: Number, 
+                required: true
+            },
+            comment: {
+                type: String,
+                required: true
+            },
+            name: {
+                type: String,
+                required: true
+            },
+            email: {
+                type: String,
+                required: true
+            },
+        }
+    ]
 })
 
 const Product = mongoose.model('Product', productSchema)

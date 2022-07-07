@@ -31,4 +31,8 @@ export class ProductComponent implements OnInit {
     // this.router.navigateByUrl(`product/${id}`)
   }
 
+  handleCalcPriceDiscount(price: number, discount: number) {
+    return this.productService.calcPriceDiscount(price, discount)
+  }
+
 }

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Product } from 'src/app/models/product';
+import { Review } from 'src/app/models/review';
 import { ProductService } from 'src/app/services/product.service';
 
 @Component({
@@ -22,6 +23,8 @@ export class DetailProductComponent implements OnInit {
 
     this.sizes = [36, 37, 38, 39, 40, 41, 42]
     this.sizeSelected = this.sizes[0]
+
+    window.scrollTo(0, 0)
   }
 
   getProduct() {
@@ -42,5 +45,14 @@ export class DetailProductComponent implements OnInit {
 
   handleChooseSize(size: number) {
     this.sizeSelected = size
+  }
+
+  handleCalcPriceDiscount(price: number, discount: number) {
+    return this.productService.calcPriceDiscount(price, discount)
+  }
+
+  handleCalcRating(reviews: Review[]) {
+    const ratingTotal = reviews.reduce((total, cur) => total += cur.rating , 0)
+    return parseInt((ratingTotal / reviews.length).toFixed())
   }
 }

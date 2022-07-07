@@ -1,7 +1,8 @@
 
 <p-card class="product" styleClass="p-card-shadow">
-    <div class="product__image">
-        <img [src]="imageSelected" [alt]="product.name" (click)="handleNavigate(product._id)">
+    <div class="product__wrapp">
+        <img class="product__image" [src]="imageSelected" [alt]="product.name" (click)="handleNavigate(product._id)">
+        <span class="product__discount" *ngIf="product.discount">GIẢM {{product.discount}}%</span>
     </div>
 
     <div class="product__list">
@@ -11,5 +12,13 @@
     </div>
 
     <p class="product__name" (click)="handleNavigate(product._id)">{{product.name}}</p>
-    <p class="product__price">{{formatPrice(product.price)}}</p>
+    <p class="product__prices" *ngIf="product.discount; else noDiscount">
+        <span>{{handleCalcPriceDiscount(product.price, product.discount)}}</span>
+        <span>{{formatPrice(product.price)}}</span>
+    </p>
+    <ng-template #noDiscount>
+        <div class="product__price">
+            {{formatPrice(product.price)}}
+        </div>
+    </ng-template>
 </p-card>

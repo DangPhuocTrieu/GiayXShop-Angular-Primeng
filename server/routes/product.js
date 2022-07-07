@@ -53,7 +53,32 @@ router.post('/', async (req, res) => {
     } catch (error) {
         res.status(500).json({
             success: false,
-            message: error.message
+            message: 'Internal server error'
+        })
+    }
+})
+
+// ADD REVIEW
+router.post('/review/:id', async (req, res) => {
+    try {
+        const updatedProduct = await Product.findByIdAndUpdate(
+            { _id: req.params.id },
+            { $push: { reviews: req.body } }, 
+            { new: true } 
+        )
+
+        // const product = await Product.findById(req.params.id)
+        // await product.updateOne({ $push: { reviews: req.body } })
+
+        res.status(200).json({ 
+            success: true, 
+            message: 'Add review successfully!', 
+            data: updatedProduct
+        })
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: 'Internal server error'
         })
     }
 })
