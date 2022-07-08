@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { CART_KEY } from 'src/app/constants';
 import { Product } from 'src/app/models/product';
 import { Review } from 'src/app/models/review';
 import { ProductService } from 'src/app/services/product.service';
@@ -11,32 +12,31 @@ import { ProductService } from 'src/app/services/product.service';
 })
 export class DetailProductComponent implements OnInit {
   product!: Product
+  sizeList!: number[]
+  cartList!: any[]
+  
   imageSelected!: string
-  sizes!: number[]
   sizeSelected!: number
+  quantily: number = 1
+  rating!: number
 
 
   constructor(private productService: ProductService, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.getProduct()
+    this.sizeList = [36, 37, 38, 39, 40, 41, 42]
 
-    this.sizes = [36, 37, 38, 39, 40, 41, 42]
-    this.sizeSelected = this.sizes[0]
-
-    window.scrollTo(0, 0)
+    window.scrollTo(0, 0)  
   }
 
   getProduct() {
     let id = this.route.snapshot.paramMap.get('id')
     this.productService.getProduct(id).subscribe(res => {
       this.product = res.data as Product
+      this.handleCalcRating(this.product.reviews)
       this.imageSelected = this.product.images.image_1
     })
-  }
-
-  formatPrice(price: number) {
-    return this.productService.formatVND(price)
   }
 
   handleChangeImage(event: any) {
@@ -47,12 +47,72 @@ export class DetailProductComponent implements OnInit {
     this.sizeSelected = size
   }
 
-  handleCalcPriceDiscount(price: number, discount: number) {
-    return this.productService.calcPriceDiscount(price, discount)
+  handleCalcPrice(price: number, discount?: number) {
+    let originPrice = this.productService.calcPriceDiscount(price, discount ? discount : null)
+    return this.productService.formatVND(originPrice)
   }
 
   handleCalcRating(reviews: Review[]) {
-    const ratingTotal = reviews.reduce((total, cur) => total += cur.rating , 0)
-    return parseInt((ratingTotal / reviews.length).toFixed())
+    if(reviews.length === 0 || !reviews) {
+      this.rating = 5
+    }
+    else {
+      const ratingTotal = reviews.reduce((total, cur) => total += cur.rating , 0)
+      this.rating = parseInt((ratingTotal / reviews.length).toFixed())
+    }  
+
+    return this.rating
+  }
+
+  handleReviewsChange(reviews: Review[]) {
+    this.handleCalcRating(reviews)
+
+    // UPDATE RATING IN LOCAL STORAGE AFTER ADD REVIEW
+    let cartList = this.productService.getCartListStorage()
+    const updatedRating = this.handleCalcRating(reviews)
+
+    cartList = cartList.map((item: any) => {
+      if(item._id === this.product._id) {
+        item.rating = updatedRating
+      }
+      
+      return item
+    })
+
+    localStorage.setItem(CART_KEY, JSON.stringify(cartList))
+  }
+
+  hanldeAddToCart() {
+    this.cartList = this.productService.getCartListStorage()
+    const product = this.cartList.find(item => item._id === this.product._id && item.size === this.sizeSelected)
+    
+    let newCarts
+    if(product) {
+      newCarts = this.cartList.map(item => {
+        if(item._id === product._id && item.size === this.sizeSelected) {
+          item.quantily += this.quantily
+        }
+
+        return item
+      })
+    }
+    else {
+      let newProduct = {
+        ...this.product, 
+        size: this.sizeSelected,
+        quantily: this.quantily,
+        originPrice: this.product.discount ? this.productService.calcPriceDiscount(this.product.price, this.product.discount) : this.product.price,
+        rating: this.handleCalcRating(this.product.reviews)
+      }
+
+      newCarts = [...this.cartList, newProduct]
+    }
+    
+    localStorage.setItem(CART_KEY, JSON.stringify(newCarts))
+
+    this.sizeSelected = 0
+    this.quantily = 1
+
+    this.productService.displayMessage('Added to cart', 'Successfully')
   }
 }

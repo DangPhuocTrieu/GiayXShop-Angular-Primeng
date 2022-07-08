@@ -13,12 +13,12 @@
 
     <p class="product__name" (click)="handleNavigate(product._id)">{{product.name}}</p>
     <p class="product__prices" *ngIf="product.discount; else noDiscount">
-        <span>{{handleCalcPriceDiscount(product.price, product.discount)}}</span>
-        <span>{{formatPrice(product.price)}}</span>
+        <span>{{handleCalcPrice(product.price, product.discount)}}</span>
+        <span>{{handleCalcPrice(product.price)}}</span>
     </p>
     <ng-template #noDiscount>
         <div class="product__price">
-            {{formatPrice(product.price)}}
+            {{handleCalcPrice(product.price)}}
         </div>
     </ng-template>
 </p-card>

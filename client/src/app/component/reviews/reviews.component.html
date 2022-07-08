@@ -10,6 +10,7 @@
             <div class="reviews__list-wrapp">
                 <span class="reviews__list-name">{{review.name}}</span>
                 <p-rating [stars]="review.rating" [cancel]="false" iconOffClass="pi pi-star-fill" [iconOffStyle]="{fontSize: '13px'}" [readonly]="true"></p-rating>
+                <span class="reviews__list-date">{{dateNow | date}}</span>
             </div>
             <p class="reviews__list-comment">{{review.comment}}</p>
         </div>

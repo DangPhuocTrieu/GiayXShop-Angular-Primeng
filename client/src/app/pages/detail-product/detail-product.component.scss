@@ -125,11 +125,22 @@
         }
     }
 
+    &__buy {
+        display: flex;
+        align-items: center;
+        gap: 0 20px;
+        height: 60px;
+    }
+
+    &__quantily {
+        height: 100%;
+    }
+
     &__submit {
+        flex: 1;
         font-size: 18px;
         font-weight: 500;
-        padding: 15px 0;
-        margin-bottom: 10px;
+        height: 100%;
     }
 
     &__policy {

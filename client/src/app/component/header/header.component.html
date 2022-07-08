@@ -18,6 +18,6 @@
     </ul>
     <div class="header__actions">
         <p-button icon="pi pi-search" styleClass="p-button-rounded p-button-text"></p-button>
-        <i pBadge value="0" severity="success" class="pi pi-shopping-cart"></i>
+        <i pBadge [value]="cartsTotal"  class="pi pi-shopping-cart" routerLink="/cart"></i>
     </div>
 </header>

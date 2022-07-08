@@ -18,10 +18,6 @@ export class ProductComponent implements OnInit {
     this.imageSelected = this.product.images.image_1
   }
 
-  formatPrice(price: number) {
-    return this.productService.formatVND(price)
-  }
-
   handleHoverImage(event: any) {
     this.imageSelected = event.target.src
   }
@@ -31,8 +27,9 @@ export class ProductComponent implements OnInit {
     // this.router.navigateByUrl(`product/${id}`)
   }
 
-  handleCalcPriceDiscount(price: number, discount: number) {
-    return this.productService.calcPriceDiscount(price, discount)
+  handleCalcPrice(price: number, discount?: number) {
+    let originPrice = this.productService.calcPriceDiscount(price, discount ? discount : null)
+    return this.productService.formatVND(originPrice)
   }
 
 }

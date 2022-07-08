@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { MessageService } from 'primeng/api';
 import { Observable } from 'rxjs';
+import { CART_KEY } from '../constants';
 import { DataServer } from '../models/data';
 
 @Injectable({
@@ -28,8 +29,19 @@ export class ProductService {
     return price.toLocaleString('vi', {style : 'currency', currency : 'VND'});
   }
 
-  calcPriceDiscount(price: number, discount: number) {
-    return this.formatVND(price - (price / 100 * discount))
+  calcPriceDiscount(price: number, discount: number | null) {
+    if(discount) {
+      return price - (price / 100 * discount)
+    }
+    else {
+      return price
+    }
+  }
+
+  getCartListStorage() {
+    const cartsJSON: any = localStorage.getItem(CART_KEY)
+    return cartsJSON !== null ? JSON.parse(cartsJSON) : []
+
   }
 
   displayMessage(detail: string,summary?: string, severity: string = 'success') {
