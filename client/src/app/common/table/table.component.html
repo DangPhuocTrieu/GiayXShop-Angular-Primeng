@@ -1,0 +1,43 @@
+<p-toast></p-toast>
+
+<div class="card">
+    <ng-content select="p-toolbar"></ng-content>
+    
+    <p-table [value]="data" [columns]="columns" [rows]="5" [paginator]="true" [rowHover]="true"  
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [showCurrentPageReport]="true"
+    >
+        <ng-template pTemplate="caption">
+            <div class="flex align-items-center justify-content-between">
+                <h3 class="m-0">Manage Products</h3>
+                <span class="p-input-icon-left">
+                    <i class="pi pi-search"></i>
+                    <input pInputText type="text" placeholder="Search...">
+                </span>
+            </div>
+        </ng-template>
+
+        <ng-template pTemplate="header" let-col>
+            <tr>
+                <th style="width: 3rem">
+                    <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                </th>
+                <th></th>
+                <th *ngFor="let column of columns" [pSortableColumn]="column">
+                    {{column.header}} <p-sortIcon [field]="column"></p-sortIcon>
+                </th>
+                <th>Actions</th>
+            </tr>
+        </ng-template>
+
+        <ng-template pTemplate="body" let-item>
+            <ng-content select="tr"></ng-content>
+        </ng-template>
+               
+        <ng-template pTemplate="summary">
+            <div class="flex align-items-center justify-content-between">
+                In total there are {{data?.length}} users
+            </div>
+        </ng-template>
+        
+    </p-table>
+</div>

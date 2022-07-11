@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ConfirmationService } from 'primeng/api';
 import { CART_KEY } from 'src/app/constants';
-import { Product } from 'src/app/models/product';
+import { CartItem } from 'src/app/models/cartItem';
 import { ProductService } from 'src/app/services/product.service';
 
 @Component({
@@ -10,26 +10,37 @@ import { ProductService } from 'src/app/services/product.service';
   styleUrls: ['./cart.component.scss']
 })
 export class CartComponent implements OnInit {
-  cartList!: any[]
-  cartListTemp!: any[]
-  productsSelected: any[] = []
+  columns: any[] = [
+    { field: 'name', header: 'Name' },
+    { field: 'price', header: 'Price' },
+    { field: 'reviews', header: 'Reviews' },
+    { field: 'quantily', header: 'Quantily' },
+    { field: 'size', header: 'Size' },
+    { field: 'total', header: 'Total' }
+  ]
+
+  cartList!: CartItem[]
+  cartListTemp!: CartItem[]
+  productsSelected: CartItem[] = []
 
   constructor(private productService: ProductService, private confirmationService: ConfirmationService) { }
 
   ngOnInit(): void {
-    this.cartList = this.productService.getCartListStorage()
-    this.cartListTemp = this.cartList
+    setTimeout(() => {
+      this.cartList = this.productService.getCartListStorage()
+      this.cartListTemp = this.cartList
+    }, 500)
   }
 
-  formatPrice(price: number) {
+  formatPrice(price: number): string {
     return this.productService.formatVND(price)
   }
 
-  handleTotalPrice() {
+  handleTotalPrice(): string {
     return this.formatPrice(this.cartList.reduce((total, cur) => total += cur.originPrice * cur.quantily , 0))
   }
 
-  handleChangeQuantily(id: string, size: number , newQuantily: number) {
+  handleChangeQuantily(id: string, size: number , newQuantily: number): CartItem[] | void {
     if(newQuantily > 0) {
       this.cartList = this.cartList.map(item => {
         if(item._id === id && item.size === size) {
@@ -57,13 +68,13 @@ export class CartComponent implements OnInit {
     })
   }
 
-  handleMultipleDelete() {
+  handleMultipleDelete(): void {
     this.confirmationService.confirm({
       message: 'Are you sure you want to delete select products?',
       header: 'Confirm',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {   
-        this.productsSelected.map((item: any) => {
+        this.productsSelected.map(item => {
           this.cartList = this.cartList.filter(x => {
             return (item._id === x._id && item.size !== x.size) || item._id !== x._id
           })
@@ -76,8 +87,22 @@ export class CartComponent implements OnInit {
     })
   }
 
-  handleSearchChange(e: any) {
+  handleSearchChange(e: any): void {
     const searchValue = e.target.value
     this.cartList = this.cartListTemp.filter(item => item.name.toLowerCase().includes(searchValue.toLowerCase()))
+  }
+
+  handlePayment(): void {
+    this.confirmationService.confirm({
+      message: 'Are you sure you want to pay for all products?',
+      header: 'Confirm',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {   
+        localStorage.removeItem(CART_KEY)  
+        this.cartList = []
+
+        this.productService.displayMessage('Successful payment', 'Successfully')
+      }
+    })
   }
 }

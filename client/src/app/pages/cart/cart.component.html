@@ -1,4 +1,49 @@
-<div class="cart">
+<app-table 
+    [columns]="columns" 
+    [data]="cartList"
+>
+    <p-toolbar styleClass="my-4">
+        <ng-template pTemplate="left">
+            <button pButton pRipple label="Delete" icon="pi pi-trash" class="p-button-danger"></button>
+        </ng-template>
+    </p-toolbar>
+
+    <tr *ngFor="let item of cartList"> 
+        <td>
+            <p-tableCheckbox [value]="item"></p-tableCheckbox>
+        </td>
+        <td><img [src]="item.images.image_1" [alt]="item.name" width="100" class="shadow-4 cursor-pointer" routerLink="/product/{{item._id}}" /></td>
+        <td>{{ item.name }}</td>
+        <td>{{ formatPrice(item.originPrice) }}</td>
+        <td><p-rating [ngModel]="item.rating" [readonly]="true" [cancel]="false"></p-rating></td>
+        <td>{{ item.quantily }}</td>
+        <td>{{ item.size }}</td> 
+        <td>{{ formatPrice(item.originPrice * item.quantily) }}</td>
+        <td>
+            <button pButton pRipple icon="pi pi-caret-up" class="p-button-rounded p-button-success mr-2" (click)="handleChangeQuantily(item._id, item.size, item.quantily + 1)"></button>
+            <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning mr-2" (click)="handleDelete(item._id, item.size)"></button>
+            <button pButton pRipple icon="pi pi-caret-down" class="p-button-rounded p-button-success" (click)="handleChangeQuantily(item._id, item.size, item.quantily - 1)"></button>
+        </td>
+    </tr> 
+</app-table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- <div class="cart">
     <p-toolbar styleClass="mb-4">
         <ng-template pTemplate="left">
             <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success mr-2"></button>
@@ -6,7 +51,7 @@
         </ng-template>
     </p-toolbar>
 
-    <p-table #dt [value]="cartList" [rows]="5" [paginator]="true" [rowHover]="true" [(selection)]="productsSelected"
+    <p-table #dt [value]="cartList" [rows]="5" [paginator]="true" [rowHover]="true" [loading]="!cartList" [(selection)]="productsSelected"
      currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [showCurrentPageReport]="true">
         <ng-template pTemplate="caption">
             <div class="flex align-items-center justify-content-between">
@@ -40,7 +85,7 @@
                 <td><img [src]="item.images.image_1" [alt]="item.name" width="100" class="shadow-4 cursor-pointer" routerLink="/product/{{item._id}}" /></td>
                 <td>{{ item.name }}</td>
                 <td>{{ formatPrice(item.originPrice) }}</td>
-                <td><p-rating [stars]="item.rating ? item.rating : 5" [readonly]="true" [cancel]="false" iconOffClass="pi pi-star-fill" ></p-rating></td>
+                <td><p-rating [ngModel]="item.rating" [readonly]="true" [cancel]="false"></p-rating></td>
                 <td>{{ item.quantily }}</td>
                 <td>{{ item.size }}</td>
                 <td>{{ formatPrice(item.originPrice * item.quantily) }}</td>
@@ -54,11 +99,19 @@
         <ng-template pTemplate="summary">
             <div class="flex align-items-center justify-content-between">
                 <p>In total there are {{cartList ? cartList.length : 0 }} products.</p>
-                <span>Tổng tiền: <b>{{handleTotalPrice()}}</b></span>
+                <div class="flex align-items-center column-gap-7">
+                    <span>Tổng tiền: <b>{{handleTotalPrice()}}</b></span>
+                    <button *ngIf="cartList.length > 0" pButton label="Thanh toán" (click)="handlePayment()"></button>
+                </div>
             </div>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+            <tr>
+                <td colspan="8">No products found.</td>
+            </tr>
         </ng-template>
     </p-table>
 </div>
 
 <p-toast></p-toast>
-<p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>
+<p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog> -->

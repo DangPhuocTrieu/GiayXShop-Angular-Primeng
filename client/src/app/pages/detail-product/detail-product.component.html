@@ -7,9 +7,7 @@
             </div>
             <div class="detail__info">
                 <h3 class="detail__name">{{product.name}}</h3>
-                <p-rating [stars]="rating" iconOffClass="pi pi-star-fill" 
-                    [cancel]="false" [readonly]="true" >
-                </p-rating>
+                <p-rating [ngModel]="rating" [cancel]="false" [readonly]="true"></p-rating>
                 <p class="detail__desc">{{product.description}}</p>
                 <p class="detail__prices" *ngIf="product.discount; else noDiscount">
                     <span>{{handleCalcPrice(product.price, product.discount)}}</span>

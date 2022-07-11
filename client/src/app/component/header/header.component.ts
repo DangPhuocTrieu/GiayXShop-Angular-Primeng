@@ -13,7 +13,7 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit(): void {
     const cartList = this.productService.getCartListStorage()
-    this.cartsTotal = cartList.reduce((total: number, cur: any) => total += cur.quantily, 0)
+    this.cartsTotal = cartList.reduce((total: number, cur: any) => total += cur.quantily, 0).toString()
   }
 
 }

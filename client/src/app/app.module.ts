@@ -8,27 +8,30 @@ import { BadgeModule } from 'primeng/badge';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
 import { CarouselModule } from 'primeng/carousel';
-import { TableModule } from 'primeng/table';
-import { InputTextModule } from 'primeng/inputtext';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { DialogModule } from 'primeng/dialog';
+import { FileUploadModule } from 'primeng/fileupload';
+import { InputTextareaModule } from 'primeng/inputtextarea';
+import { InputTextModule } from 'primeng/inputtext';
 import { PaginatorModule } from 'primeng/paginator';
 import { PanelModule } from 'primeng/panel';
-import { FileUploadModule } from 'primeng/fileupload';
-import { ToolbarModule } from 'primeng/toolbar';
 import { RatingModule } from 'primeng/rating';
+import { Table, TableModule, TableService } from 'primeng/table';
 import { ToastModule } from 'primeng/toast';
+import { ToolbarModule } from 'primeng/toolbar';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { TableComponent } from './common/table/table.component';
 import { CarouselComponent } from './component/carousel/carousel.component';
 import { HeaderComponent } from './component/header/header.component';
 import { PolicyComponent } from './component/policy/policy.component';
 import { ProductComponent } from './component/product/product.component';
 import { ProductsComponent } from './component/products/products.component';
 import { ReviewsComponent } from './component/reviews/reviews.component';
+import { AdminComponent } from './pages/admin/admin.component';
+import { CartComponent } from './pages/cart/cart.component';
 import { DetailProductComponent } from './pages/detail-product/detail-product.component';
 import { HomeComponent } from './pages/home/home.component';
-import { CartComponent } from './pages/cart/cart.component';
-import { AdminComponent } from './pages/admin/admin.component';
 
 
 @NgModule({
@@ -43,7 +46,8 @@ import { AdminComponent } from './pages/admin/admin.component';
     DetailProductComponent,
     ReviewsComponent,
     CartComponent,
-    AdminComponent
+    AdminComponent,
+    TableComponent
   ],
   imports: [
     BrowserModule,
@@ -63,9 +67,11 @@ import { AdminComponent } from './pages/admin/admin.component';
     TableModule,
     ToolbarModule,
     FileUploadModule,
-    ConfirmDialogModule
+    ConfirmDialogModule,
+    DialogModule,
+    InputTextareaModule
   ],
-  providers: [ConfirmationService, MessageService],
+  providers: [ConfirmationService, MessageService, Table, TableService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

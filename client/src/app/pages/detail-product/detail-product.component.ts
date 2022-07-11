@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CART_KEY } from 'src/app/constants';
+import { CartItem } from 'src/app/models/cartItem';
 import { Product } from 'src/app/models/product';
 import { Review } from 'src/app/models/review';
 import { ProductService } from 'src/app/services/product.service';
@@ -13,7 +14,7 @@ import { ProductService } from 'src/app/services/product.service';
 export class DetailProductComponent implements OnInit {
   product!: Product
   sizeList!: number[]
-  cartList!: any[]
+  cartList!: CartItem[]
   
   imageSelected!: string
   sizeSelected!: number
