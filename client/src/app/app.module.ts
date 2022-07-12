@@ -11,8 +11,8 @@ import { CarouselModule } from 'primeng/carousel';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { DialogModule } from 'primeng/dialog';
 import { FileUploadModule } from 'primeng/fileupload';
-import { InputTextareaModule } from 'primeng/inputtextarea';
 import { InputTextModule } from 'primeng/inputtext';
+import { InputTextareaModule } from 'primeng/inputtextarea';
 import { PaginatorModule } from 'primeng/paginator';
 import { PanelModule } from 'primeng/panel';
 import { RatingModule } from 'primeng/rating';
@@ -69,7 +69,7 @@ import { HomeComponent } from './pages/home/home.component';
     FileUploadModule,
     ConfirmDialogModule,
     DialogModule,
-    InputTextareaModule
+    InputTextareaModule,
   ],
   providers: [ConfirmationService, MessageService, Table, TableService],
   bootstrap: [AppComponent]

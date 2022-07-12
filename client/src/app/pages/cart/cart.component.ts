@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ConfirmationService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
+import { MessagesModule } from 'primeng/messages';
 import { CART_KEY } from 'src/app/constants';
 import { CartItem } from 'src/app/models/cartItem';
 import { ProductService } from 'src/app/services/product.service';
@@ -23,13 +24,11 @@ export class CartComponent implements OnInit {
   cartListTemp!: CartItem[]
   productsSelected: CartItem[] = []
 
-  constructor(private productService: ProductService, private confirmationService: ConfirmationService) { }
+  constructor(private productService: ProductService, public confirmationService: ConfirmationService) { }
 
   ngOnInit(): void {
-    setTimeout(() => {
-      this.cartList = this.productService.getCartListStorage()
-      this.cartListTemp = this.cartList
-    }, 500)
+    this.cartList = this.productService.getCartListStorage()
+    this.cartListTemp = this.cartList
   }
 
   formatPrice(price: number): string {
@@ -61,7 +60,7 @@ export class CartComponent implements OnInit {
       icon: 'pi pi-exclamation-triangle',
       accept: () => {   
         this.cartList = this.cartList.filter(item => (item._id === id && item.size !== size) || item._id !== id)
-        
+        console.log(1);
         localStorage.setItem(CART_KEY, JSON.stringify(this.cartList))
         this.productService.displayMessage('Deleted product', 'Successfully')
       }

@@ -54,11 +54,15 @@ export class ProductService {
     return this.http.post<DataServer>(this.BASE_URL, data)
   }
 
-  editProduct(data: Product): Observable<DataServer> {
-    return this.http.put<DataServer>(this.BASE_URL, data)
+  editProduct(id: string, data: Product): Observable<DataServer> {
+    return this.http.put<DataServer>(`${this.BASE_URL}/${id}`, data)
   }
 
   deleteProduct(id: string): Observable<DataServer> {
     return this.http.delete<DataServer>(`${this.BASE_URL}/${id}`)
+  }
+
+  uploadImage(formData: FormData): Observable<any> {
+    return this.http.post<any>('https://api.cloudinary.com/v1_1/ddwurilrw/image/upload', formData)
   }
 }
