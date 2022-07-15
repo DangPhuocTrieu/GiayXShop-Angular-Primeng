@@ -23,6 +23,7 @@ export class CartComponent implements OnInit {
   cartList!: CartItem[]
   cartListTemp!: CartItem[]
   productsSelected: CartItem[] = []
+  searchValue: string = ''
 
   constructor(private productService: ProductService, public confirmationService: ConfirmationService) { }
 
@@ -60,7 +61,6 @@ export class CartComponent implements OnInit {
       icon: 'pi pi-exclamation-triangle',
       accept: () => {   
         this.cartList = this.cartList.filter(item => (item._id === id && item.size !== size) || item._id !== id)
-        console.log(1);
         localStorage.setItem(CART_KEY, JSON.stringify(this.cartList))
         this.productService.displayMessage('Deleted product', 'Successfully')
       }
@@ -86,9 +86,8 @@ export class CartComponent implements OnInit {
     })
   }
 
-  handleSearchChange(e: any): void {
-    const searchValue = e.target.value
-    this.cartList = this.cartListTemp.filter(item => item.name.toLowerCase().includes(searchValue.toLowerCase()))
+  handleSearchChange(): void {
+    this.cartList = this.cartListTemp.filter(item => item.name.toLowerCase().includes(this.searchValue.toLowerCase()))
   }
 
   handlePayment(): void {

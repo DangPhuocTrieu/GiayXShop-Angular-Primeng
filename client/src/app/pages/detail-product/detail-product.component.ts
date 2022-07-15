@@ -66,7 +66,7 @@ export class DetailProductComponent implements OnInit {
   }
 
   handleReviewsChange(reviews: Review[]) {
-    this.handleCalcRating(reviews)
+    // this.handleCalcRating(reviews)
 
     // UPDATE RATING IN LOCAL STORAGE AFTER ADD REVIEW
     let cartList = this.productService.getCartListStorage()
@@ -74,6 +74,7 @@ export class DetailProductComponent implements OnInit {
 
     cartList = cartList.map((item: any) => {
       if(item._id === this.product._id) {
+        console.log(1);
         item.rating = updatedRating
       }
       
@@ -89,6 +90,7 @@ export class DetailProductComponent implements OnInit {
     
     let newCarts
     if(product) {
+      
       newCarts = this.cartList.map(item => {
         if(item._id === product._id && item.size === this.sizeSelected) {
           item.quantily += this.quantily

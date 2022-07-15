@@ -12,6 +12,7 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { DialogModule } from 'primeng/dialog';
 import { FileUploadModule } from 'primeng/fileupload';
 import { InputTextModule } from 'primeng/inputtext';
+import { PasswordModule } from 'primeng/password';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { PaginatorModule } from 'primeng/paginator';
 import { PanelModule } from 'primeng/panel';
@@ -32,6 +33,8 @@ import { AdminComponent } from './pages/admin/admin.component';
 import { CartComponent } from './pages/cart/cart.component';
 import { DetailProductComponent } from './pages/detail-product/detail-product.component';
 import { HomeComponent } from './pages/home/home.component';
+import { LoginFormComponent } from './pages/login-form/login-form.component';
+import { SignupFormComponent } from './pages/signup-form/signup-form.component';
 
 
 @NgModule({
@@ -47,7 +50,9 @@ import { HomeComponent } from './pages/home/home.component';
     ReviewsComponent,
     CartComponent,
     AdminComponent,
-    TableComponent
+    TableComponent,
+    LoginFormComponent,
+    SignupFormComponent
   ],
   imports: [
     BrowserModule,
@@ -66,6 +71,7 @@ import { HomeComponent } from './pages/home/home.component';
     ToastModule,
     TableModule,
     ToolbarModule,
+    PasswordModule,
     FileUploadModule,
     ConfirmDialogModule,
     DialogModule,
