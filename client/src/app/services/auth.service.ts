@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { MessageService } from 'primeng/api';
 import { Observable } from 'rxjs';
+import { USER_KEY } from '../constants';
 import { DataServer } from '../models/data';
 
 @Injectable({
@@ -19,4 +20,10 @@ export class AuthService {
   login(data: any): Observable<DataServer> {
     return this.http.post<DataServer>(`${this.BASE_URL}/login`, data)
   }
+
+  getUserStorage(): any {
+    const userJSON: any = localStorage.getItem(USER_KEY)
+    return JSON.parse(userJSON)
+  }
 }
+

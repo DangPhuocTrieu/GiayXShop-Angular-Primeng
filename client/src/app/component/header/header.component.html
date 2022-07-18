@@ -17,7 +17,13 @@
         </li>
     </ul>
     <div class="header__actions">
-        <p-button label="Login" routerLink="/login"></p-button>
+        <p-button *ngIf="!user; else logged" label="Login" routerLink="/login"></p-button>
         <i pBadge [value]="cartsTotal" class="pi pi-shopping-cart" routerLink="/cart"></i>
     </div>
+    <ng-template #logged>
+        <div class="header__user">
+            <p>{{user.username}}</p>
+            <button pButton type="button" label="Đăng xuất" class="p-button-text" (click)="handleLogout()"></button>
+        </div>
+    </ng-template>
 </header>

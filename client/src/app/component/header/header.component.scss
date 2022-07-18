@@ -51,4 +51,18 @@
             cursor: pointer;
         }
     }
+
+    &__user {
+        display: flex;
+        align-items: center;
+
+        p {
+            padding-right: 8px;
+            border-right: 1px solid gray;
+        }
+
+        button {
+            font-size: 14px;
+        }
+    }
 }
