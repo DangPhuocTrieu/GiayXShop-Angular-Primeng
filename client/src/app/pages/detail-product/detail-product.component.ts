@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { Store } from '@ngrx/store';
 import { CART_KEY } from 'src/app/constants';
 import { CartItem } from 'src/app/models/cartItem';
 import { Product } from 'src/app/models/product';
 import { Review } from 'src/app/models/review';
 import { ProductService } from 'src/app/services/product.service';
+import { changeQuantilyCart } from '../../store/cart/cart.action'
 
 @Component({
   selector: 'app-detail-product',
@@ -13,7 +15,7 @@ import { ProductService } from 'src/app/services/product.service';
 })
 export class DetailProductComponent implements OnInit {
   product!: Product
-  sizeList!: number[]
+  sizeList: number[] = [36, 37, 38, 39, 40, 41, 42]
   cartList!: CartItem[]
   
   imageSelected!: string
@@ -22,12 +24,14 @@ export class DetailProductComponent implements OnInit {
   rating!: number
 
 
-  constructor(private productService: ProductService, private route: ActivatedRoute) { }
+  constructor(
+    private productService: ProductService, 
+    private route: ActivatedRoute,
+    private store: Store
+    ) { }
 
   ngOnInit(): void {
     this.getProduct()
-    this.sizeList = [36, 37, 38, 39, 40, 41, 42]
-
     window.scrollTo(0, 0)  
   }
 
@@ -90,7 +94,6 @@ export class DetailProductComponent implements OnInit {
     
     let newCarts
     if(product) {
-      
       newCarts = this.cartList.map(item => {
         if(item._id === product._id && item.size === this.sizeSelected) {
           item.quantily += this.quantily
@@ -112,6 +115,7 @@ export class DetailProductComponent implements OnInit {
     }
     
     localStorage.setItem(CART_KEY, JSON.stringify(newCarts))
+    this.store.dispatch(changeQuantilyCart({ count: this.quantily }))
 
     this.sizeSelected = 0
     this.quantily = 1

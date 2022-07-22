@@ -64,7 +64,7 @@ router.post('/login', async (req, res) => {
                 process.env.ACCESS_TOKEN_SECRET
             )
     
-            const { password, ...others } = user._doc
+            const { password, __v, ...others } = user._doc
     
             res.status(200).json({ 
                 success: true, 

@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { MessagesModule } from 'primeng/messages';
 import { CART_KEY } from 'src/app/constants';
 import { CartItem } from 'src/app/models/cartItem';
 import { ProductService } from 'src/app/services/product.service';
+import { changeQuantilyCart } from 'src/app/store/cart/cart.action';
 
 @Component({
   selector: 'app-cart',
@@ -25,7 +27,11 @@ export class CartComponent implements OnInit {
   productsSelected: CartItem[] = []
   searchValue: string = ''
 
-  constructor(private productService: ProductService, public confirmationService: ConfirmationService) { }
+  constructor(
+    private productService: ProductService, 
+    public confirmationService: ConfirmationService,
+    private store: Store
+    ) { }
 
   ngOnInit(): void {
     this.cartList = this.productService.getCartListStorage()
@@ -40,7 +46,7 @@ export class CartComponent implements OnInit {
     return this.formatPrice(this.cartList.reduce((total, cur) => total += cur.originPrice * cur.quantily , 0))
   }
 
-  handleChangeQuantily(id: string, size: number , newQuantily: number): CartItem[] | void {
+  handleChangeQuantily(type: string, id: string, size: number , newQuantily: number): CartItem[] | void {
     if(newQuantily > 0) {
       this.cartList = this.cartList.map(item => {
         if(item._id === id && item.size === size) {
@@ -49,7 +55,8 @@ export class CartComponent implements OnInit {
   
         return item
       })
-  
+
+      this.store.dispatch(changeQuantilyCart({ count: type === 'increase' ? 1: -1 }))
       localStorage.setItem(CART_KEY, JSON.stringify(this.cartList))
     }
   }
@@ -60,9 +67,13 @@ export class CartComponent implements OnInit {
       header: 'Confirm',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {   
+        let product = this.cartList.find(item => item._id === id && item.size === size)
+        this.store.dispatch(changeQuantilyCart({ count: -(product?.quantily as number) }))
+        
         this.cartList = this.cartList.filter(item => (item._id === id && item.size !== size) || item._id !== id)
         localStorage.setItem(CART_KEY, JSON.stringify(this.cartList))
-        this.productService.displayMessage('Deleted product', 'Successfully')
+
+        this.productService.displayMessage('Deleted product', 'Successfully')        
       }
     })
   }

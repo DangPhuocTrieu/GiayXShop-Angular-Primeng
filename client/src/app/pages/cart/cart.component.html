@@ -45,9 +45,9 @@
                 <td>{{ item.size }}</td>
                 <td>{{ formatPrice(item.originPrice * item.quantily) }}</td>
                 <td>
-                    <button pButton pRipple icon="pi pi-caret-up" class="p-button-rounded p-button-success mr-2" (click)="handleChangeQuantily(item._id, item.size, item.quantily + 1)"></button>
+                    <button pButton pRipple icon="pi pi-caret-up" class="p-button-rounded p-button-success mr-2" (click)="handleChangeQuantily('increase', item._id, item.size, item.quantily + 1)"></button>
                     <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning mr-2" (click)="handleDelete(item._id, item.size)"></button>
-                    <button pButton pRipple icon="pi pi-caret-down" class="p-button-rounded p-button-success" (click)="handleChangeQuantily(item._id, item.size, item.quantily - 1)"></button>
+                    <button pButton pRipple icon="pi pi-caret-down" class="p-button-rounded p-button-success" (click)="handleChangeQuantily('decrease', item._id, item.size, item.quantily - 1)"></button>
                 </td>
             </tr>
         </ng-template>

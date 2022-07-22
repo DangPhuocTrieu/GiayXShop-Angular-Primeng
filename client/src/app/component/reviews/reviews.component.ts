@@ -1,9 +1,9 @@
-import { DatePipe } from '@angular/common';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MessageService } from 'primeng/api';
 import { Product } from 'src/app/models/product';
 import { Review } from 'src/app/models/review';
+import { User } from 'src/app/models/user';
+import { AuthService } from 'src/app/services/auth.service';
 import { ProductService } from 'src/app/services/product.service';
 
 @Component({
@@ -20,41 +20,45 @@ export class ReviewsComponent implements OnInit {
   dateNow: Date = new Date
 
   form!: FormGroup
+  user!: User | null
 
-  constructor(private productService: ProductService, private fb: FormBuilder, private messageService: MessageService) { }
+  constructor(
+    private productService: ProductService, 
+    private fb: FormBuilder, 
+    private authService: AuthService,
+    ) { }
 
   ngOnInit(): void {
     this.form = this.fb.group({
       rating: ['', Validators.required],
       comment: ['', [Validators.required, Validators.minLength(15)]],
-      name: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
     })
 
     this.reviews = this.product.reviews
     this.reviewsTotalString = this.reviews.length.toString() || '0'
+
+    this.user = this.authService.getUserStorage()
   }
 
   handleSubmit(form: FormGroup) {
     form.markAllAsTouched()
-
-    console.log(form.value);
     
+    if(!form.valid) return
 
-    if(form.valid) {
-      this.productService.addReview(this.product._id, form.value).subscribe({
-        next: (res: any) => {
-          this.reviews = [ ...this.reviews, res.data.reviews[res.data.reviews.length - 1] ]
-          this.reviewsTotalString = (parseInt(this.reviewsTotalString) + 1).toString()
-          this.productService.displayMessage('Reviews added', 'Successfully')
-          
-          form.reset()
-          this.reviewsChange.emit(this.reviews)
-        },
-        error: ({ error }) => {       
-          this.productService.displayMessage(error.message ? error.message : 'Internal server error', 'Error', 'error')
-        }
-      })
-    }
+    const data = { ...form.value, userId: this.user?._id }
+
+    this.productService.addReview(this.product._id, data).subscribe({
+      next: (res: any) => {
+        this.reviews = [ ...this.reviews, res.data.reviews[res.data.reviews.length - 1] ]
+        this.reviewsTotalString = (parseInt(this.reviewsTotalString) + 1).toString()
+        this.productService.displayMessage('Reviews added', 'Successfully')
+        
+        form.reset()
+        this.reviewsChange.emit(this.reviews)
+      },
+      error: ({ error }) => {       
+        this.productService.displayMessage(error.message ? error.message : 'Internal server error', 'Error', 'error')
+      }
+    })
   }
 }
