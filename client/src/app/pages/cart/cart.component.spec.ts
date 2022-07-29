@@ -3,6 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule, By } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { Store, StoreModule } from '@ngrx/store';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ConfirmDialog, ConfirmDialogModule } from 'primeng/confirmdialog';
 import { RatingModule } from 'primeng/rating';
@@ -14,7 +15,7 @@ import { ProductService } from 'src/app/services/product.service';
 import { CartComponent } from './cart.component';
 
 
-fdescribe('CartComponent', () => {
+describe('CartComponent', () => {
   let component: CartComponent;
   let productService: jasmine.SpyObj<ProductService>;
   let fixture: ComponentFixture<CartComponent>;
@@ -59,7 +60,7 @@ fdescribe('CartComponent', () => {
   ]
 
   beforeEach(async () => {
-    productService = jasmine.createSpyObj('productService', ['formatVND'])
+    productService = jasmine.createSpyObj('productService', ['formatVND', 'getCartListStorage', 'displayMessage'])
 
     await TestBed.configureTestingModule({
       declarations: [ CartComponent ],
@@ -72,14 +73,16 @@ fdescribe('CartComponent', () => {
         BrowserModule,
         RatingModule, 
         ToastModule, 
-        ToolbarModule, 
+        ToolbarModule,
+        StoreModule.forRoot({}),
         TableModule,
         BrowserAnimationsModule
       ],
       providers: [ 
         MessageService, 
-        ConfirmationService ,
-        // { provide: ProductService, useValue: productService },
+        ConfirmationService,
+        Store,
+        { provide: ProductService, useValue: productService },
       ]
     })
     .compileComponents();
@@ -111,7 +114,7 @@ fdescribe('CartComponent', () => {
   it('call func handleChangeQuantily', () => {
     component.cartList = cartList
 
-    component.handleChangeQuantily('1', 40, 3)
+    component.handleChangeQuantily('increase', '1', 40, 3)
     expect(component.cartList[0].quantily).toEqual(3)
   })
 

@@ -4,6 +4,7 @@ import { MessageService } from 'primeng/api';
 import { Observable } from 'rxjs';
 import { USER_KEY } from '../constants';
 import { DataServer } from '../models/data';
+import { User } from '../models/user';
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +22,7 @@ export class AuthService {
     return this.http.post<DataServer>(`${this.BASE_URL}/login`, data)
   }
 
-  getUserStorage(): any {
+  getUserStorage(): User {
     const userJSON: any = localStorage.getItem(USER_KEY)
     return JSON.parse(userJSON)
   }

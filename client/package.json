@@ -6,7 +6,9 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test --code-coverage"
+    "test": "ng test --code-coverage",
+    "e2e": "ng e2e",
+    "webdriver-manager-update": "webdriver-manager update"
   },
   "private": true,
   "dependencies": {
@@ -20,10 +22,13 @@
     "@angular/platform-browser-dynamic": "~13.3.0",
     "@angular/router": "~13.3.0",
     "@ngrx/store": "^13.2.0",
+    "jasmine-reporters": "^2.5.0",
+    "jasmine-spec-reporter": "^7.0.0",
     "primeflex": "^3.2.1",
     "primeicons": "^5.0.0",
     "primeng": "^13.0.0",
     "rxjs": "~7.5.0",
+    "ts-node": "^10.9.1",
     "tslib": "^2.3.0",
     "zone.js": "~0.11.4"
   },
@@ -39,6 +44,7 @@
     "karma-coverage": "~2.1.0",
     "karma-jasmine": "~4.0.0",
     "karma-jasmine-html-reporter": "~1.7.0",
+    "protractor": "^7.0.0",
     "typescript": "~4.6.2"
   }
 }

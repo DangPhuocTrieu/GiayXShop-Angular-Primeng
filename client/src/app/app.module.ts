@@ -36,6 +36,7 @@ import { HomeComponent } from './pages/home/home.component';
 import { LoginFormComponent } from './pages/login-form/login-form.component';
 import { SignupFormComponent } from './pages/signup-form/signup-form.component';
 import { cartReducer } from './store/cart/cart.reducer';
+import { NotFoundComponent } from './component/not-found/not-found.component';
 
 
 @NgModule({
@@ -52,7 +53,8 @@ import { cartReducer } from './store/cart/cart.reducer';
     CartComponent,
     AdminComponent,
     LoginFormComponent,
-    SignupFormComponent
+    SignupFormComponent,
+    NotFoundComponent
   ],
   imports: [
     BrowserModule,

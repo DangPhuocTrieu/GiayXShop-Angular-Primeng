@@ -34,6 +34,7 @@ export class CartComponent implements OnInit {
     ) { }
 
   ngOnInit(): void {
+    this.cartList = []
     this.cartList = this.productService.getCartListStorage()
     this.cartListTemp = this.cartList
   }
@@ -43,7 +44,7 @@ export class CartComponent implements OnInit {
   }
 
   handleTotalPrice(): string {
-    return this.formatPrice(this.cartList.reduce((total, cur) => total += cur.originPrice * cur.quantily , 0))
+    return this.formatPrice(this.cartList?.reduce((total, cur) => total += cur.originPrice * cur.quantily , 0))
   }
 
   handleChangeQuantily(type: string, id: string, size: number , newQuantily: number): CartItem[] | void {

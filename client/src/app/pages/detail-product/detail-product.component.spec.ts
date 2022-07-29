@@ -1,7 +1,19 @@
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterModule } from '@angular/router';
+import { Store, StoreModule } from '@ngrx/store';
+import { BrowserModule } from '@angular/platform-browser';
+import { ReviewsComponent } from 'src/app/component/reviews/reviews.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MessageService } from 'primeng/api';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { BadgeModule } from 'primeng/badge';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { ToastModule } from 'primeng/toast';
+import { InputNumberModule } from 'primeng/inputnumber';
+import { PanelModule } from 'primeng/panel';
+import { RatingModule } from 'primeng/rating';
+import { of } from 'rxjs';
 import { ProductService } from 'src/app/services/product.service';
 import { DetailProductComponent } from './detail-product.component';
 
@@ -68,17 +80,44 @@ fdescribe('DetailProductComponent', () => {
   ]
 
   beforeEach(async () => {
-    productService = jasmine.createSpyObj('productService', ['calcPriceDiscount']);
+    productService = jasmine.createSpyObj('productService', ['getProduct', 'formatVND', 'calcPriceDiscount', 'getCartListStorage']);
+    productService.getProduct.and.returnValue(of({
+      success: true, 
+      message: 'Get product successfully!', 
+      data: {
+        _id: '2', 
+        name: 'Product 2', 
+        description: 'Desc 2',
+        price: 20000,
+        images: { image_1: 'image-1', image_2: 'image-2', image_3: 'image-2' },
+        reviews: [],
+      }
+    }));
 
     await TestBed.configureTestingModule({
-
-      declarations: [ DetailProductComponent ],
+      declarations: [ DetailProductComponent, ReviewsComponent ],
       imports: [
         HttpClientModule, 
+        RatingModule,
+        InputNumberModule,
+        PanelModule,
+        BadgeModule,
+        ToastModule,
+        // HttpClient,
+        BrowserModule,
+        HttpClientTestingModule,
+        FormsModule,
+        ReactiveFormsModule,
+        BrowserAnimationsModule,
+        StoreModule.forRoot({}),
         RouterModule.forRoot([]),
       ],
       providers: [
+        { provide: ProductService, useValue: productService },
+        HttpClient,
+        HttpClientModule,
         MessageService,
+        Store
        ]
     })
     .compileComponents();
@@ -93,11 +132,6 @@ fdescribe('DetailProductComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-
-
-  // it('call func handleChangeImage', () => {
-    
-  // })
 
   it('call func handleChooseSize', () => {
     let size = 40;
@@ -123,21 +157,17 @@ fdescribe('DetailProductComponent', () => {
   })
 
   it('call func handleReviewsChange', () => {
-    component.cartList = cartList
     let reviewList = reviews
-    component.product = {
-      _id: '2', 
-      name: 'Product 2', 
-      description: 'Desc 2',
-      price: 20000,
-      images: { image_1: 'image-1', image_2: 'image-2', image_3: 'image-2' },
-      reviews: [],
-    }
-
+    component.cartList = cartList    
+    
+    component.getProduct()
+  
     component.handleReviewsChange(reviewList)
-    expect(component.cartList[1]).toEqual({
-      ...cartList[1],
-      rating: component.rating
-    })
+    console.log(component.cartList)
+    
+    // expect(component.cartList[1]).toEqual({
+    //   ...cartList[1],
+    //   rating: component.rating
+    // })
   }) 
 });
