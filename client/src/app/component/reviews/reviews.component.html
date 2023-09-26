@@ -2,7 +2,7 @@
     <div class="reviews__heading">
         Đánh giá <p-badge [value]="reviewsTotalString"></p-badge>
     </div>
-    <div class="reviews__total"><span>{{reviews?.length}}</span> đánh giá</div>
+    <div class="reviews__total"><span>{{reviews.length}}</span> đánh giá</div>
     <p class="reviews__first" *ngIf="reviews.length === 0">Hãy Là Người Đầu Tiên Nhận Xét {{product.name}}</p>
 
     <div class="reviews__list" *ngIf="reviews.length > 0">

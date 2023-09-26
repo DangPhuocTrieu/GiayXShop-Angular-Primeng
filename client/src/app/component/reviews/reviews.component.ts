@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Product } from 'src/app/models/product';
 import { Review } from 'src/app/models/review';
 import { User } from 'src/app/models/user';
@@ -19,12 +19,12 @@ export class ReviewsComponent implements OnInit {
   reviewsTotalString!: string
   dateNow: Date = new Date
 
-  form!: FormGroup
+  form!: UntypedFormGroup
   user!: User | null
 
   constructor(
     private productService: ProductService, 
-    private fb: FormBuilder, 
+    private fb: UntypedFormBuilder, 
     private authService: AuthService,
     ) { }
 
@@ -40,7 +40,7 @@ export class ReviewsComponent implements OnInit {
     this.user = this.authService.getUserStorage()
   }
 
-  handleSubmit(form: FormGroup) {
+  handleSubmit(form: UntypedFormGroup) {
     form.markAllAsTouched()
     
     if(!form.valid) return

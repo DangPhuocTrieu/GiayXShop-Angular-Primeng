@@ -1,5 +1,5 @@
 import { AfterViewChecked, ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { ConfirmationService } from 'primeng/api';
 import { from, mergeMap, Observer } from 'rxjs';
@@ -41,7 +41,7 @@ export class AdminComponent implements OnInit, AfterViewChecked {
     complete: () => {}
   }
 
-  form: FormGroup = this.fb.group({
+  form: UntypedFormGroup = this.fb.group({
     _id: [''],
     name: ['', Validators.required], 
     description: ['', Validators.required],
@@ -51,7 +51,7 @@ export class AdminComponent implements OnInit, AfterViewChecked {
 
   constructor(
     private productService: ProductService,
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     private confirmationService: ConfirmationService,
     private cd: ChangeDetectorRef,
     private sanitizer: DomSanitizer
@@ -124,7 +124,7 @@ export class AdminComponent implements OnInit, AfterViewChecked {
   }
 
   // SUBMIT FORM
-  saveUser(form: FormGroup) {
+  saveUser(form: UntypedFormGroup) {
     form.markAllAsTouched()
     
     if(!form.valid) return

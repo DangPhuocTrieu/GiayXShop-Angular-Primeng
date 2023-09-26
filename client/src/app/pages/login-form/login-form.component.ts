@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import { MessageService } from 'primeng/api';
@@ -17,12 +17,12 @@ import { loginStart, loginSuccess } from '../../store/auth/auth.action'
 export class LoginFormComponent implements OnInit {
   loading$!: Observable<boolean>
 
-  form: FormGroup = this.fb.group({
+  form: UntypedFormGroup = this.fb.group({
     username: ['', Validators.required],
     password: ['', Validators.required]
   })
   constructor(
-    private fb: FormBuilder, 
+    private fb: UntypedFormBuilder, 
     private authService: AuthService, 
     private messageService: MessageService,
     private router: Router
@@ -31,7 +31,7 @@ export class LoginFormComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  handleSubmit(form: FormGroup) {
+  handleSubmit(form: UntypedFormGroup) {
     form.markAllAsTouched()
 
     if(!form.valid) return

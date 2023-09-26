@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { AuthService } from 'src/app/services/auth.service';
@@ -10,14 +10,14 @@ import { AuthService } from 'src/app/services/auth.service';
   styleUrls: ['./signup-form.component.scss']
 })
 export class SignupFormComponent implements OnInit {
-  form: FormGroup = this.fb.group({
+  form: UntypedFormGroup = this.fb.group({
     username: ['', Validators.required],
     password: ['', Validators.required],
     confirmpassword: ['', Validators.required],
   }, { validator: this.checkPasswords })
 
   constructor(
-    private fb: FormBuilder, 
+    private fb: UntypedFormBuilder, 
     private authService: AuthService, 
     private messageService: MessageService,
     private router: Router
@@ -26,7 +26,7 @@ export class SignupFormComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  handleSubmit(form: FormGroup) {
+  handleSubmit(form: UntypedFormGroup) {
     form.markAllAsTouched()
 
     if(!form.valid) return 
@@ -42,7 +42,7 @@ export class SignupFormComponent implements OnInit {
     })
   }
 
-  checkPasswords(form: FormGroup) {
+  checkPasswords(form: UntypedFormGroup) {
     const pass = form.get('password')?.value;
     const confirmPass = form.get('confirmpassword')?.value;
     return pass === confirmPass ? null : { notSame: true };
